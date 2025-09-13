@@ -1,0 +1,271 @@
+# Dinolabs Project Documentation
+
+## 1. Project Overview
+
+This project is a comprehensive web application for Dinolabs, a technical service provider. The application appears to serve multiple functions, including a client management system, a learning management system (LMS) through an academy portal, a blog, and a community forum. It seems designed to manage clients, students, courses, and content, with different user roles and permissions.
+
+---
+
+## 2. Database Schema
+
+The application uses a MySQL database to store its data. The schema is defined in `database_schema.php`, which automatically creates the necessary tables if they don't exist. Below is a detailed description of each table.
+
+### `roles`
+Stores user roles to manage permissions within the application.
+- `id`: (INT, Primary Key) - Unique identifier for the role.
+- `name`: (VARCHAR) - The name of the role (e.g., 'admin', 'moderator').
+- `description`: (TEXT) - A brief description of the role's responsibilities.
+
+### `users`
+Stores information about users who can log in to the system.
+- `id`: (INT, Primary Key) - Unique identifier for the user.
+- `username`: (VARCHAR, Unique) - The user's login name.
+- `password`: (VARCHAR) - The user's hashed password.
+- `name`: (VARCHAR) - The user's full name.
+- `email`: (VARCHAR, Unique) - The user's email address.
+- `role_id`: (INT, Foreign Key) - References `roles.id` to assign a role to the user.
+- `is_admin`: (TINYINT) - A flag (0 or 1) to indicate if the user has administrative privileges.
+- `created_at`: (TIMESTAMP) - The date and time the user account was created.
+
+### `courses`
+Stores information about the courses offered in the academy.
+- `id`: (INT, Primary Key) - Unique identifier for the course.
+- `course_name`: (VARCHAR) - The name of the course.
+- `description`: (TEXT) - A detailed description of the course content.
+- `price`: (INT) - The price of the course.
+- `duration`: (VARCHAR) - The duration of the course (e.g., "3 months").
+
+### `academy`
+Stores information about students enrolled in the academy.
+- `id`: (INT, Primary Key) - Unique identifier for the student.
+- `name`: (VARCHAR) - The student's full name.
+- `gender`: (VARCHAR) - The student's gender.
+- `email`: (VARCHAR) - The student's email address.
+- `mobile`: (VARCHAR) - The student's mobile phone number.
+- `state`, `city`, `address`: (VARCHAR) - The student's location details.
+- `course_id`: (INT, Foreign Key) - References `courses.id` for the course the student is enrolled in.
+- `duration`: (VARCHAR) - The duration of the student's course.
+- `year_enrolled`: (VARCHAR) - The year the student enrolled.
+- `qualification`: (VARCHAR) - The student's academic qualification.
+- `computer_literacy`: (VARCHAR) - The student's level of computer literacy.
+- `nkin_name`, `nkin_mobile`, `nkin_email`: (VARCHAR) - Next of kin's contact details.
+- `spn_name`, `spn_mobile`, `spn_email`: (VARCHAR) - Sponsor's contact details.
+- `image_path`: (VARCHAR) - Path to the student's profile picture.
+- `created_at`: (TIMESTAMP) - The date and time the student's record was created.
+- `password`: (VARCHAR) - The student's password for the academy portal.
+
+### `clients`
+Stores information about business clients.
+- `id`: (INT, Primary Key) - Unique identifier for the client.
+- `business_name`: (VARCHAR) - The name of the client's business.
+- `ceo_name`: (VARCHAR) - The name of the CEO.
+- `mobile`, `email`, `address`: (VARCHAR) - Client's contact information.
+- `category`: (VARCHAR) - The business category.
+- `total_students`: (INT) - The number of students/users the client has.
+- `license_expiry_date`: (DATE) - The expiry date for the client's software license.
+- `web_ip_address`, `web_username`, `web_password`, `web_database`: (VARCHAR) - Credentials for the client's web services.
+- `amount_per_student`, `total_amount`, `amount_paid`, `outstanding_balance`: (DECIMAL) - Financial details related to the client's account.
+- `is_active`: (TINYINT) - A flag (0 or 1) to indicate if the client's account is active.
+- `user_id`: (INT, Foreign Key) - References `users.id`.
+
+### `license`
+Stores software license information.
+- `id`: (INT, Primary Key) - Unique identifier for the license.
+- `name`, `phone`, `email`, `organization`: (VARCHAR) - Details of the license holder.
+- `sofware_name`: (VARCHAR) - The name of the software being licensed.
+- `txtcapacity`: (INT) - The capacity or number of users for the license.
+- `cmbpackage`: (VARCHAR) - The type of package.
+- `enddate`: (DATE) - The license expiry date.
+- `license_key`: (VARCHAR) - The generated license key.
+- `transaction_date`: (TIMESTAMP) - The date the license was issued.
+
+### `transactions`
+Logs financial transactions.
+- `transaction_id`: (INT, Primary Key) - Unique identifier for the transaction.
+- `client_id`: (INT, Foreign Key) - References `clients.id`.
+- `payment_amount`: (DECIMAL) - The amount paid in the transaction.
+- `transaction_date`: (TIMESTAMP) - The date of the transaction.
+- `business_name`: (VARCHAR) - The name of the business.
+- `license_subscription`: (VARCHAR) - The type of license subscription.
+
+### `posts`
+Stores blog posts.
+- `id`: (INT, Primary Key) - Unique identifier for the post.
+- `title`: (VARCHAR) - The title of the blog post.
+- `content`: (TEXT) - The main content of the post.
+- `author_id`: (INT, Foreign Key) - References `users.id` of the post's author.
+- `category_id`: (INT, Foreign Key) - References `categories.id`.
+- `image_path`: (VARCHAR) - Path to the post's feature image.
+- `views`: (INT) - The number of times the post has been viewed.
+- `likes`: (INT) - The number of likes the post has received.
+- `created_at`: (TIMESTAMP) - The date the post was created.
+
+### `comments`
+Stores comments on blog posts.
+- `id`: (INT, Primary Key) - Unique identifier for the comment.
+- `post_id`: (INT, Foreign Key) - References `posts.id`.
+- `name`, `email`: (VARCHAR) - The name and email of the person who commented.
+- `content`: (TEXT) - The text of the comment.
+- `created_at`: (TIMESTAMP) - The date the comment was made.
+
+### `likes`
+Tracks user likes on posts.
+- `id`: (INT, Primary Key) - Unique identifier for the like.
+- `user_id`: (INT, Foreign Key) - References `users.id`.
+- `post_id`: (INT, Foreign Key) - References `posts.id`.
+- `created_at`: (TIMESTAMP) - The date the like was given.
+
+### `categories`
+Stores categories for blog posts.
+- `id`: (INT, Primary Key) - Unique identifier for the category.
+- `name`: (VARCHAR, Unique) - The name of the category.
+- `description`: (TEXT) - A description of the category.
+
+### `classes`
+Stores class information for the academy.
+- `id`: (INT, Primary Key) - Unique identifier for the class.
+- `name`: (VARCHAR) - The name of the class.
+
+### `schedules`
+Stores class schedules.
+- `id`: (INT, Primary Key) - Unique identifier for the schedule entry.
+- `class_id`: (INT, Foreign Key) - References `classes.id`.
+- `day`: (VARCHAR) - The day of the week for the class.
+- `time`: (VARCHAR) - The time of the class.
+
+### `assignments`
+Assigns students to classes.
+- `id`: (INT, Primary Key) - Unique identifier for the assignment.
+- `student_id`: (INT) - The ID of the student.
+- `class_id`: (INT) - The ID of the class.
+
+### `tasks`
+Stores tasks or assignments for courses.
+- `id`: (INT, Primary Key) - Unique identifier for the task.
+- `course_id`: (INT) - The ID of the course this task belongs to.
+- `description`: (TEXT) - The description of the task.
+- `submission_date`: (DATETIME) - The deadline for the task.
+
+### `threads` & `community_posts`
+These tables support a community forum.
+- `threads`: Stores the main topic of a discussion.
+  - `id`, `title`, `content`, `author`, `created_at`
+- `community_posts`: Stores replies within a thread.
+  - `id`, `thread_id`, `content`, `author`, `created_at`
+
+### CBT (Computer-Based Test) Tables
+A set of tables for creating and managing online tests.
+- `question`: Stores the questions, options, and correct answers for tests.
+- `mst_result`: Stores the results of users who have taken a test.
+- `cbtadmin`: Stores administrative settings for tests, like date and time.
+- `timer`: Manages timers for students during tests.
+- `mst_useranswer`: Stores the specific answers a user selected for each question.
+
+### `audit_log`
+Logs user activities for security and monitoring purposes.
+- `id`: (INT, Primary Key) - Unique identifier for the log entry.
+- `user_id`: (INT) - The ID of the user who performed the activity.
+- `activity`: (VARCHAR) - A description of the activity.
+- `details`: (TEXT) - More details about the activity.
+- `timestamp`: (TIMESTAMP) - The time the activity occurred.
+
+---
+
+## 3. File Structure
+
+The project is organized into several directories, each with a specific purpose. This structure separates concerns and makes the codebase easier to maintain.
+
+- **`/` (Root Directory)**: Contains the main public-facing pages of the website, such as `index.php`, `about.php`, `contact.php`, and `blog.php`. It also includes configuration files like `db_connect.php` and `database_schema.php`.
+
+- **`/academy_img/`**: Stores images related to the academy, such as profile pictures of students.
+
+- **`/assets/`**: Contains static assets for the frontend, including images.
+
+- **`/backend/`**: This is a major directory that seems to contain the core administrative and business logic of the application. It includes functionalities for user management, client management, course creation, payment processing, and more.
+    - **`/backend/assets/`**: Static assets specifically for the backend interface.
+    - **`/backend/functions/`**: Likely contains reusable PHP functions used throughout the backend.
+    - **`/backend/logic/`**: May contain more complex business logic and processing scripts.
+
+- **`/components/`**: Contains reusable UI components, such as the header (`head.php`), navigation bar (`navbar.php`), and footer (`footer.php`), which are included in various pages to maintain a consistent look and feel.
+
+- **`/css/`**: Contains the main stylesheets for the application, including `bootstrap.min.css` and a custom `style.css`.
+
+- **`/img/`**: Stores general images used across the website, such as logos, carousel images, and blog post thumbnails.
+
+- **`/js/`**: Contains JavaScript files for frontend interactivity, with `main.js` being the primary file.
+
+- **`/lib/`**: Includes third-party JavaScript libraries and plugins, such as `animate`, `owlcarousel`, and `wow`.
+
+- **`/modules/`**: Appears to contain modular parts of the application. For example, `blog_index.php` might be a module for displaying the blog.
+
+- **`/phpmailer/`**: Contains the PHPMailer library, which is used for sending emails from the application (e.g., for contact forms, notifications, etc.).
+
+---
+
+## 4. Key Features
+
+Based on the file structure and database schema, the application includes the following key features:
+
+### User and Client Management
+- **User Authentication**: Users can register and log in to the system (`backend/login.php`, `backend/process_registration.php`).
+- **Role-Based Access Control**: The `roles` table suggests that different users have different levels of permissions (e.g., admin, moderator).
+- **Client Management**: The system allows for managing business clients, including their contact information, licenses, and payments (`backend/client.php`, `backend/purchase_license.php`).
+- **User Control Panel**: Admins can manage users, including adding, editing, and deleting them (`backend/user_control.php`).
+
+### Academy / Learning Management System (LMS)
+- **Course Management**: Admins can create, edit, and delete courses (`backend/courses.php`).
+- **Student Enrollment**: Students can register for courses through the academy portal (`academy.php`, `register_course.php`).
+- **Student Profiles**: Each student has a profile with their personal and academic information (`backend/student_profile.php`).
+- **Class Scheduling**: The system supports creating class schedules (`backend/create_class.php`, `backend/process_schedule.php`).
+- **Tasks and Assignments**: Instructors can create and manage tasks for courses (`backend/create_tasks.php`).
+- **Computer-Based Tests (CBT)**: The application has a full-featured CBT system for creating and administering online quizzes and exams (`backend/quiz.php`, `backend/addquestion.php`).
+
+### Content Management (Blog and Community)
+- **Blog**: The application includes a blog where admins can create, edit, and delete posts (`create_post.php`, `edit_post.php`, `delete_post.php`).
+- **Categories**: Blog posts can be organized into categories (`manage_categories.php`).
+- **Comments and Likes**: Users can interact with blog posts by leaving comments and liking them (`add_comment.php`, `like_post.php`).
+- **Community Forum**: A forum feature allows users to create threads and post replies, fostering a community (`backend/community.php`, `backend/create_thread.php`).
+
+### Financial and Administrative
+- **Payment Tracking**: The system tracks payments from clients and generates transaction history (`backend/payment_tracking.php`, `backend/transaction_history.php`).
+- **License Management**: The application generates and manages software licenses for clients (`backend/license_history.php`, `backend/save_license.php`).
+- **Audit Log**: The system keeps a log of important user activities for security and auditing purposes (`backend/audit_log.php`).
+
+---
+
+## 5. Getting Started
+
+This section provides instructions on how to set up the project for local development.
+
+### Prerequisites
+- A web server with PHP and MySQL (e.g., XAMPP, WAMP, MAMP).
+- A web browser.
+- A code editor.
+
+### Installation
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/dinolabs-tech/dinolabs.git
+   ```
+2. **Database Setup**:
+   - Create a new MySQL database named `command`.
+   - The application is configured to automatically create the necessary tables when you first run it. The table schemas are defined in `database_schema.php`.
+
+3. **Database Connection**:
+   - Open the `db_connect.php` file.
+   - The default database connection settings are:
+     - **Host**: `localhost`
+     - **Username**: `root`
+     - **Password**: (empty)
+     - **Database**: `command`
+   - If your local MySQL setup uses different credentials, you will need to update this file accordingly.
+
+4. **Running the Application**:
+   - Place the project files in the root directory of your web server (e.g., the `htdocs` folder in XAMPP).
+   - Open your web browser and navigate to the project's URL (e.g., `http://localhost/dinolabs`).
+   - The application should now be running, and the database tables should be created automatically.
+
+
+This information is pre-inserted into the `users` table by the `database_schema.php` script. You can use these credentials to log in as an administrator.
+
+---
