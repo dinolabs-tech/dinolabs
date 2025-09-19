@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Execute the SQL update query.
     if ($conn->query($sql) === TRUE) {
         // If the update is successful, redirect the user to the dashboard.
-        header("Location: dashboard.php");
+        header("Location: blog.php");
         exit(); // Stop script execution after redirection.
     } else {
         // If there's an error with the query, display an error message.
