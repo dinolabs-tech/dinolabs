@@ -33,7 +33,7 @@ Modular components for head, topbar, navbar, footer, and scripts are included fo
 -->
 <html lang="en">
 
-<?php 
+<?php
 // Include the head component. This file typically contains:
 // - Meta tags for character set, viewport, and compatibility.
 // - Favicon link.
@@ -48,14 +48,14 @@ include('components/head.php'); ?>
     <!-- Topbar Start -->
     <!-- This section includes the top navigation bar, which typically contains contact information,
          social media links, or other utility elements at the very top of the page. -->
-    <?php 
+    <?php
     // Include the topbar component.
     include('components/topbar.php'); ?>
     <!-- Topbar End -->
 
     <!-- Navbar Start -->
     <!-- This section contains the main navigation bar. -->
-    <?php 
+    <?php
     // Include the navbar component.
     include('components/navbar.php'); ?>
     <!-- Navbar End -->
@@ -86,7 +86,7 @@ include('components/head.php'); ?>
                         <div class="row g-3">
                             <div class="col-12">
                                 <!-- Input field for the category name, pre-filled with the current name. -->
-                                <input type="text" class="form-control border-0 bg-light px-4" placeholder="Name" style="height: 55px;"  id="name" name="name" value="<?php echo htmlspecialchars($category["name"]); ?>" required>
+                                <input type="text" class="form-control border-0 bg-light px-4" placeholder="Name" style="height: 55px;" id="name" name="name" value="<?php echo htmlspecialchars($category["name"]); ?>" required>
                             </div>
                             <div class="col-12">
                                 <!-- Textarea for the category description, pre-filled with the current description. -->
@@ -107,7 +107,7 @@ include('components/head.php'); ?>
     <!-- Footer Start -->
     <!-- This section includes the website's footer, containing copyright information,
          links, and other standard footer content. -->
-    <?php 
+    <?php
     // Include the footer component.
     include('components/footer.php'); ?>
     <!-- Footer End -->
