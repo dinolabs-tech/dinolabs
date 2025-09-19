@@ -1,4 +1,17 @@
 <?php
+
+/**
+ * post.php
+ *
+ * This file displays a single blog post in detail, including its content, author,
+ * publication date, views, and likes. It also features a comment section where
+ * users can leave new comments, and authenticated users (admins/mods) can edit or delete comments.
+ * Social sharing buttons are provided for WhatsApp, Twitter, and Facebook.
+ * The page increments the post's view count upon loading.
+ * Modular components for head, topbar, navbar, footer, and scripts are included for consistency.
+ */
+
+
 session_start();
 include("db_connect.php");
 
@@ -17,24 +30,7 @@ $post = $result->fetch_assoc();
 $update_views_sql = "UPDATE posts SET views = views + 1 WHERE id = $post_id";
 $conn->query($update_views_sql);
 
-?>
 
-<?php
-/**
- * post.php
- *
- * This file displays a single blog post in detail, including its content, author,
- * publication date, views, and likes. It also features a comment section where
- * users can leave new comments, and authenticated users (admins/mods) can edit or delete comments.
- * Social sharing buttons are provided for WhatsApp, Twitter, and Facebook.
- * The page increments the post's view count upon loading.
- * Modular components for head, topbar, navbar, footer, and scripts are included for consistency.
- */
-
-// Start the session to manage user sessions.
-session_start();
-// Include the database connection file.
-include("db_connect.php");
 
 // Retrieve the 'id' of the post from the GET request parameters.
 // This ID is crucial for fetching the correct blog post.
