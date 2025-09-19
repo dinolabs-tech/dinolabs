@@ -138,7 +138,7 @@ include('components/head.php'); ?>
                                         class="img-fluid w-100 rounded mb-5" style="max-width: 100%;">
                                 <?php } ?>
                                 <!-- Post Content -->
-                                <p><?php echo nl2br(htmlspecialchars($post["content"])); ?></p>
+                                <p><?php echo $post["content"]; ?></p>
 
                                 <!-- Additional Post Information -->
                                 <p>Post created by: <?php echo htmlspecialchars($post["username"]); ?></p>

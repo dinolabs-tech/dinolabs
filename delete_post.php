@@ -31,6 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
     // For production, prepared statements should be used.
     $post_id = $_GET["id"];
 
+     // Delete comments associated with the post
+    $sql_comments = "DELETE FROM comments WHERE post_id = $post_id";
+    $conn->query($sql_comments);
+
     // First, fetch the 'image_path' of the post from the 'posts' table.
     // This is necessary to delete the physical image file from the server.
     $sql = "SELECT image_path FROM posts WHERE id = $post_id";
