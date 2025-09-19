@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])) {
             }
 
             // Redirect the user to the dashboard after successful deletion.
-            header("Location: dashboard.php");
+            header("Location: blog.php");
             exit(); // Terminate script execution after redirection.
         } else {
             // If the database query failed, display an error message.
