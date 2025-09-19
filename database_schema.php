@@ -138,8 +138,6 @@ $tables = [
             PRIMARY KEY (`id`),
             KEY `author_id` (`author_id`),
             KEY `category_id` (`category_id`),
-            CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`),
-            CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
     ",
 
