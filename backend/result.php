@@ -37,13 +37,14 @@ if (!$rowtimer || $rowtimer['login'] == null || $rowtimer['login'] != $check) {
 } else {
   // Retrieve student registration details
   $sql = mysqli_query($conn, "SELECT academy.*, courses.course_name FROM academy join courses on courses.id = academy.course_id WHERE academy.id='$loginid'");
+  $course_id = null;
   while ($appost = mysqli_fetch_assoc($sql)) {
     $id = $appost['email'];
     $name = $appost['name'];
     $gender = $appost['gender'];
     $course = $appost['course_name'];
     $duration = $appost['duration'];
-
+	$course_id = $appost['course_id'];
     //$pic         = "<img border='0' src='" . $appost['photo'] . "' width='85px' height='100px' alt='Your Name'>";
   }
 
@@ -54,19 +55,21 @@ if (!$rowtimer || $rowtimer['login'] == null || $rowtimer['login'] != $check) {
   // Assuming this code block is executed after your score calculation:
   if ($appostk && $appostk['total_score'] !== null) {
     $score = $appostk['total_score']; // Sum of all scores from mst_result
-    $score1 = $score * 4;             // Multiply the total by 4 for screening score
   } else {
     $score = 0;   // Default to 0 if no results
-    $score1 = 0;  // Corresponding multiplied value
   }
 
+  // Get total number of questions for the course
+  $total_questions_query = mysqli_query($conn, "SELECT COUNT(*) as total_questions FROM question WHERE course='$course_id'");
+  $total_questions_row = mysqli_fetch_assoc($total_questions_query);
+  $total_questions = $total_questions_row['total_questions'];
+
   // Define the maximum possible screening score.
-  // For example, if there are 25 questions each worth 4 points, the max is 100.
-  $maxScreeningScore = 100;
+  $maxScreeningScore = $total_questions * 4;
 
   // Calculate the percentage. Make sure $maxScreeningScore is not zero.
   if ($maxScreeningScore > 0) {
-    $percentage = ($score1 / $maxScreeningScore) * 100;
+    $percentage = ($score / $maxScreeningScore) * 100;
   } else {
     $percentage = 0;
   }

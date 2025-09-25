@@ -1,7 +1,5 @@
 <?php
 session_start();
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 // Redirect to login if user is not authenticated
 if (!isset($_SESSION['user_id'])) {
@@ -18,8 +16,7 @@ if ($conn->connect_error) {
 
 // Get the login ID
 $loginid = $_SESSION['user_id'];
-$course= $_SESSION['course'];
-
+$course = $_SESSION['course'];
 
 // Fetch or initialize the student's timer
 $stmt = $conn->prepare("SELECT timer FROM timer WHERE studentid = ?");
@@ -61,44 +58,45 @@ $elapsed_seconds = max(0, $current_seconds - $start_seconds); // Prevent negativ
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Exam Timer</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        #timerDisplay {
-            font-size: 3rem;
-            font-family: 'Tahoma', sans-serif;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exam Timer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+      #timerDisplay {
+          font-size: 3rem;
+          font-family: 'Tahoma', sans-serif;
+      }
+  </style>
 </head>
 <body class="bg-light">
-    <div class="container py-1">
-        <div class="card mx-auto shadow" style="max-width: 400px;">
-            <div class="card-header text-center bg-primary text-white">
-                <h4 class="mb-0">Exam Timer</h4>
-            </div>
-            <div class="card-body text-center">
-                <p class="lead">
-                    <i>Start Time:</i>
-                    <strong><?php echo htmlspecialchars($start_time); ?></strong>
-                </p>
-                <input type="hidden" value="<?php echo $elapsed_seconds; ?>" id="elapsedSeconds">
-                <input type="hidden" value="<?php echo $exam_duration_seconds; ?>" id="examDuration">
-                <div id="timerDisplay" class="my-4">00 : 00 : 00</div>
-            </div>
-        </div>
-    </div>
+  <div class="container py-1">
+      <div class="card mx-auto shadow" style="max-width: 400px;">
+          <div class="card-header text-center bg-primary text-white">
+              <h4 class="mb-0">Exam Timer</h4>
+          </div>
+          <div class="card-body text-center">
+              <p class="lead">
+                  <i>Start Time:</i>
+                  <strong><?php echo htmlspecialchars($start_time); ?></strong>
+              </p>
+              <input type="hidden" value="<?php echo $elapsed_seconds; ?>" id="elapsedSeconds">
+              <input type="hidden" value="<?php echo $exam_duration_seconds; ?>" id="examDuration">
+              <div id="timerDisplay" class="my-4">00 : 00 : 00</div>
+          </div>
+      </div>
+  </div>
 
-    <script>
- $(document).ready(function() {
-    const elapsed = parseInt($('#elapsedSeconds').val()) || 0;
-    const duration = parseInt($('#examDuration').val()) || 2700; // 45 minutes default
-    let timeRemaining = duration - elapsed; // Start with remaining time
+<script>
+$(document).ready(function() {
+    let elapsed = parseInt($('#elapsedSeconds').val()) || 0;
+    let duration = parseInt($('#examDuration').val()) || 2700; // default 45 mins
+    let timeRemaining = duration - elapsed;
 
     function updateTimer() {
         if (timeRemaining <= 0) {
+            $('#timerDisplay').text("00 : 00 : 00");
             clearInterval(timerInterval);
             window.location = 'close.php';
             return;
@@ -114,25 +112,25 @@ $elapsed_seconds = max(0, $current_seconds - $start_seconds); // Prevent negativ
             $('#timerDisplay').css('color', 'red');
         }
 
-        const formattedTime = 
+        const formattedTime =
             String(hours).padStart(2, '0') + ' : ' +
             String(minutes).padStart(2, '0') + ' : ' +
             String(seconds).padStart(2, '0');
         $('#timerDisplay').text(formattedTime);
 
-        timeRemaining--; // Decrease time
+        timeRemaining--; // decrease after rendering
     }
 
     if (timeRemaining > 0) {
-        const timerInterval = setInterval(updateTimer, 1000);
-        updateTimer(); // Initial call to avoid 1-second delay
+        updateTimer(); // Initial render
+        var timerInterval = setInterval(updateTimer, 1000);
     } else {
-        console.log('Time already up on load');
+        $('#timerDisplay').text("00 : 00 : 00");
         window.location = 'close.php';
     }
 });
+</script>
 
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
