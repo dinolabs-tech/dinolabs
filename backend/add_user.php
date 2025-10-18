@@ -1,30 +1,4 @@
-<?php
-include('logic/add_user_logic.php');
-
-$username = $email = $password = $category = "";
-$errors = array();
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST["username"];
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    $category = $_POST["category"];
-
-    if (empty($username)) {
-        $errors["username"] = "Username is required";
-    }
-    if (empty($email)) {
-        $errors["email"] = "Email is required";
-    }
-    if (empty($password)) {
-        $errors["password"] = "Password is required";
-    }
-    if (empty($category) || $category == "Role") {
-        $errors["category"] = "Role is required";
-    }
-}
-
-?>
+<?php include('logic/add_user_logic.php'); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -78,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <span class="input-icon-addon">
                               <i class="fas fa-at"></i>
                             </span>
-                            <input type="text" id="username" name="username" class="form-control"
+                            <input type="text" id="username" name="username" required class="form-control"
                               placeholder="Username" />
                           </div>
                         </div>
@@ -88,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <span class="input-icon-addon">
                               <i class="fas fa-envelope"></i>
                             </span>
-                            <input type="text" id="email" name="email" class="form-control"
+                            <input type="text" id="email" name="email" required class="form-control"
                               placeholder="Email" />
                           </div>
                         </div>
@@ -104,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
 
                         <div class="col-md-2">
-                          <select id="category" name="category" class="form-select form-control">
+                          <select id="category" name="category" required class="form-select form-control">
                             <option>Role</option>
                             <?php
                             if ($result_roles->num_rows > 0) {

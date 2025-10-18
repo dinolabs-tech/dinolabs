@@ -5,29 +5,10 @@ include("db_connect.php");
 ?>
 
 <!DOCTYPE html>
-<!--
-refund_policy.php
-
-This file displays the Refund Policy page for Dinolabs Tech Services.
-It outlines the conditions and procedures for requesting refunds, including general processes,
-rules regarding service cancellations, and handling of overpayments.
-The policy also states that it may be updated and how such changes will be communicated.
-Modular components for head, topbar, navbar, footer, and scripts are included for consistency.
--->
 <html lang="en">
 
-<?php 
-// Include the head component. This file typically contains:
-// - Meta tags for character set, viewport, and compatibility.
-// - Favicon link.
-// - Google Web Fonts (e.g., Open Sans, Poppins).
-// - Icon font libraries (e.g., Font Awesome, Bootstrap Icons).
-// - Vendor CSS files (e.g., Animate.css, Owl Carousel).
-// - Bootstrap CSS framework.
-// - Custom CSS styles for the website.
-include('components/head.php');?>
+<?php include('components/head.php');?>
 <style>
-        /* Custom CSS styles specifically for the Refund Policy page content. */
         body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; color: #333; }
         header { background: #004080; color: #fff; padding: 20px 0; text-align: center; }
         main { padding: 20px; max-width: 900px; margin: auto; }
@@ -40,27 +21,17 @@ include('components/head.php');?>
 <body>
 
   <!-- Topbar Start -->
-  <!-- This section includes the top navigation bar, which typically contains contact information,
-       social media links, or other utility elements at the very top of the page. -->
-    <?php 
-    // Include the topbar component.
-    include('components/topbar.php'); ?>
+    <?php include('components/topbar.php'); ?>
     <!-- Topbar End -->
 
-    <!-- Navbar Start -->
-    <!-- This section contains the main navigation bar. -->
-    <div class="container-fluid position-relative p-0">
-        <?php 
-        // Include the navbar component.
-        include('components/navbar.php'); ?>
 
-        <!-- Page Header for Refund Policy -->
-        <!-- This div creates a styled header section specifically for the "Refund Policy" page,
-             featuring a background image/color and the main page title. -->
+    <!-- Navbar Start -->
+    <div class="container-fluid position-relative p-0">
+        <?php include('components/navbar.php'); ?>
+
         <div class="container-fluid bg-primary py-5 bg-header" style="margin-bottom: 90px;">
             <div class="row py-5">
                 <div class="col-12 pt-lg-5 mt-lg-5 text-center">
-                    <!-- Display the "Refund Policy" heading, animated to zoom in. -->
                     <h1 class="display-4 text-white animated zoomIn">Refund Policy</h1>
                 </div>
             </div>
@@ -68,7 +39,6 @@ include('components/head.php');?>
     </div>
     <!-- Navbar End -->
 
-    <!-- Main Content Area for Refund Policy -->
     <main>
     <h1>Dinolabs Tech Services Refund Policy</h1>
     <p>Dinolabs Tech Services will process all refund requests in line with this Refund Policy.</p>
@@ -95,27 +65,16 @@ include('components/head.php');?>
     <p>Once we have received your request, it will be dealt with in accordance with this Refund Policy.</p>
 
     <p>This Refund Policy was last modified on [21st March 2025]</p>
+
     </main>
 
-    <!-- Footer Start -->
-    <!-- This section includes the website's footer, containing copyright information,
-         links, and other standard footer content. -->
-    <?php 
-    // Include the footer component.
-    include('components/footer.php'); ?>
+        <!-- Footer Start -->
+    <?php include('components/footer.php'); ?>
     <!-- Footer End -->
 
-    <!-- Back to Top Button -->
-    <!-- This button provides a smooth scroll-to-top functionality for user convenience.
-         It is typically hidden until the user scrolls down a certain distance. -->
+    <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded back-to-top"><i class="bi bi-arrow-up"></i></a>
 
-    <?php
-    // Include the scripts component. This file typically contains:
-    // - jQuery library.
-    // - Bootstrap JavaScript bundle.
-    // - Vendor JavaScript files (e.g., Waypoints, CounterUp, Owl Carousel, Easing, WOW.js).
-    // - Custom JavaScript for interactive elements and animations.
-    include('components/scripts.php'); ?>
+    <?php include('components/scripts.php'); ?>
 </body>
 </html>

@@ -1,18 +1,4 @@
 <?php
-// 1. Database connection settings
-// ---------------------------------
-// This file should contain the $conn variable (MySQLi connection object)
-// so that queries can be executed.
-include('db_connect.php');
-
-
-// 2. Function to check if a table exists
-// ---------------------------------------
-// This function accepts a database connection ($conn) and a table name ($table).
-// It executes a query: SHOW TABLES LIKE 'table_name'
-// - If the table exists → returns TRUE
-// - If the table does not exist → returns FALSE
-
 // Database connection settings
 include('db_connect.php');
 
@@ -22,12 +8,6 @@ function tableExists($conn, $table)
     $result = $conn->query("SHOW TABLES LIKE '$table'");
     return $result->num_rows > 0;
 }
-
-// 3. Array of SQL statements to create tables
-// --------------------------------------------
-// Each key in the $tables array is the table name.
-// Each value is the corresponding CREATE TABLE SQL query.
-// These tables cover different parts of your system: users, roles, posts, clients, etc.
 
 // Array of table creation queries
 $tables = [
@@ -138,6 +118,8 @@ $tables = [
             PRIMARY KEY (`id`),
             KEY `author_id` (`author_id`),
             KEY `category_id` (`category_id`),
+            CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`),
+            CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
     ",
 
@@ -344,11 +326,6 @@ $tables = [
     "
 ];
 
-// 4. Define creation order
-// --------------------------
-// Some tables depend on others (foreign keys).
-// Example: users depends on roles, posts depends on users & categories, comments depends on posts.
-// This array ensures tables are created in the right sequence.
 
 // Create tables in the correct order to satisfy foreign key constraints
 $creationOrder = [
@@ -378,12 +355,6 @@ $creationOrder = [
 ];
 
 
-// 5. Loop through and create tables
-// ----------------------------------
-// For each table in the correct order:
-// - If it does not exist, create it.
-// - If creation fails, print error.
-
 foreach ($creationOrder as $tableName) {
     if (!tableExists($conn, $tableName)) {
         if ($conn->query($tables[$tableName]) === TRUE) {
@@ -395,9 +366,7 @@ foreach ($creationOrder as $tableName) {
     }
 }
 
-// 6. Insert initial roles (if roles table is empty)
-// --------------------------------------------------
-// This ensures the system has default roles ready for use.
+
 
 // Insert initial data into roles table if it's empty
 if (tableExists($conn, 'roles')) {
@@ -411,10 +380,6 @@ if (tableExists($conn, 'roles')) {
             (4, 'secretary', 'secretary role')");
     }
 }
-
-// 7. Insert initial admin user (if users table is empty)
-// ------------------------------------------------------
-// Adds the first admin account to the system.
 
 // Insert initial data into users table if it's empty
 if (tableExists($conn, 'users')) {

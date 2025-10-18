@@ -66,7 +66,7 @@
                             <span class="input-icon-addon">
                               <i class="fas fa-at"></i>
                             </span>
-                            <input type="text" id="username" name="username" class="form-control"
+                            <input type="text" id="username" name="username" required class="form-control"
                               placeholder="Username" />
                           </div>
                         </div>
@@ -76,7 +76,7 @@
                             <span class="input-icon-addon">
                               <i class="fas fa-envelope"></i>
                             </span>
-                            <input type="text" id="email" name="email" class="form-control"
+                            <input type="text" id="email" name="email" required class="form-control"
                               placeholder="Email" />
                           </div>
                         </div>

@@ -7,16 +7,7 @@
       <li class="nav-item topbar-user dropdown hidden-caret">
         <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
           <div class="avatar-sm">
-
-            <?php
-            if (isset($_SESSION['role'])) {
-              if ($_SESSION['role'] == 'student') { ?>
-                <img src="../<?= $_SESSION['imgpath']; ?>" alt="..." class="avatar-img rounded-circle" />
-              <?php } else { ?>
-               <img src="./assets/img/profile-img.jpg" alt="..." class="avatar-img rounded-circle" />
-            <?php }
-            } ?>
-
+            <img src="assets/img/profile-img.jpg" alt="..." class="avatar-img rounded-circle" />
           </div>
           <span class="profile-username">
             <span class="op-7">Hi,</span>
@@ -28,19 +19,17 @@
 
             <li>
               <div class="dropdown-divider"></div>
-              <?php
-              if (isset($_SESSION['role'])) {
-                if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'staff' || $_SESSION['role'] == 'sec') { ?>
-                  <a class="dropdown-item" href="edit_admin_profile.php">My Profile</a>
-                <?php } elseif ($_SESSION['role'] == 'client') { ?>
-                  <a class="dropdown-item" href="edit_profile.php">My Profile</a>
-                <?php } elseif ($_SESSION['role'] == 'student') { ?>
-                  <a class="dropdown-item" href="student_profile.php">My Profile</a>
-              <?php }
-              } ?>
+             <?php
+                if (isset($_SESSION['role'])) {
+                    if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'staff' || $_SESSION['role'] == 'sec')  { ?>
+                     <a class="dropdown-item" href="edit_admin_profile.php">My Profile</a>
+                   <?php } elseif ($_SESSION['role'] == 'client') { ?>
+                       <a class="dropdown-item" href="edit_profile.php">My Profile</a>
+                    <?php }
+                }?>
+                  
 
-
-
+               
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="../logout.php">Logout</a>
             </li>

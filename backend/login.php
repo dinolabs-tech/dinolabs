@@ -125,13 +125,13 @@
                                             <label for="yourUsername" class="visually-hidden">Username</label>
                                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                                             <input type="text" name="username" class="form-control" id="yourUsername"
-                                                placeholder="Enter Username...">
+                                                placeholder="Enter Username..." required>
                                         </div>
                                         <div class="input-group mb-4">
                                             <label for="yourPassword" class="visually-hidden">Password</label>
                                             <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                             <input type="password" name="password" class="form-control"
-                                                id="yourPassword" placeholder="Password">
+                                                id="yourPassword" placeholder="Password" required>
                                         </div>
                                         <button class="btn btn-primary w-100" type="submit">Login</button>
                                     </form>

@@ -39,7 +39,6 @@
                 
 
                 <a href="academy.php" class="nav-item nav-link">Academy</a>
-
                 <!-- <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu m-0">
