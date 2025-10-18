@@ -2,7 +2,7 @@
 <div class="container-fluid position-relative p-0">
     <nav class="navbar navbar-expand-lg navbar-dark px-5 py-3 py-lg-0">
         <a href="index.php" class="navbar-brand p-0">
-            <h3 style="color:dodgerblue;" class="m-0"><img src="./img/logo.png" alt="" width="45px">Dinolabs Tech
+            <h3 style="color:dodgerblue;" class="m-0"><img src="./img/logo.png" alt="" width="45px">A Dinolabs Tech
                 Services</h3>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
