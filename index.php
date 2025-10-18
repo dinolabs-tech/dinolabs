@@ -103,7 +103,7 @@ include("db_connect.php");
                             <i class="fa fa-users text-primary"></i>
                         </div>
                         <div class="ps-4">
-                            <h5 class="text-white mb-0">Happy Clients</h5>
+                            <h5 class="text-white mb-0">Happy Clients AA</h5>
                             <h1 class="text-white mb-0" data-toggle="counter-up">85</h1>
                         </div>
                     </div>
