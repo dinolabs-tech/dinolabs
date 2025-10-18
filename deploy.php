@@ -8,7 +8,7 @@ if (!isset($_GET['key']) || $_GET['key'] !== $secret) {
 
 // === Paths ===
 $repoDir = '/home/dinolabs/public_html/site';
-$webDir  = '/home/dinolabs/public_html';
+$webDir  = '/home/dinolabs/public_html/';
 $logFile = '/home/dinolabs/deploy.log';
 
 // === Step 1: Pull latest changes from Git ===
