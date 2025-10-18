@@ -8,23 +8,26 @@
  * Secure key: foxtrot2november
  */
 
-$secret = "foxtrot2november"; // must match the key in your webhook URL
-$path   = "/home/dinolabs/public_html/";
-
-// --- Security check ---
+// deploy.php (place this in /home/dinolabs/public_html/site)
+$secret = 'foxtrot2november';
 if (!isset($_GET['key']) || $_GET['key'] !== $secret) {
     http_response_code(403);
-    die('❌ Unauthorized access');
+    exit('Unauthorized');
 }
 
-// --- Run git pull command ---
-$output = shell_exec("cd $path && git pull 2>&1");
+$repoDir = '/home/dinolabs/public_html/site';
+$webRoot = '/home/dinolabs/public_html';
 
-// --- Log the deployment result ---
-$logFile = $path . "/deploy.log";
-file_put_contents($logFile, "[" . date("Y-m-d H:i:s") . "]\n" . $output . "\n\n", FILE_APPEND);
+$output = [];
 
-// --- Display output for debugging ---
-echo "<h3>✅ Deployment complete</h3>";
-echo "<pre>$output</pre>";
+// Step 1: Pull latest code from GitHub
+exec("cd $repoDir && git pull 2>&1", $output);
+
+// Step 2: Copy files from /site to root (excluding .git folder)
+exec("rsync -av --exclude='.git' $repoDir/ $webRoot/ 2>&1", $output);
+
+echo "<pre>" . implode("\n", $output) . "</pre>";
+echo "\n✅ Deployment completed successfully.";
+
+
 ?>
