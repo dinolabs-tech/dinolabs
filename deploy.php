@@ -9,7 +9,7 @@
  */
 
 $secret = "foxtrot2november"; // must match the key in your webhook URL
-$path   = "/home/dinolabs/public_html";
+$path   = "/home/dinolabs/public_html/";
 
 // --- Security check ---
 if (!isset($_GET['key']) || $_GET['key'] !== $secret) {
