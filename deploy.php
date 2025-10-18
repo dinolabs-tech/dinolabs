@@ -7,7 +7,7 @@
  * 
  * Secure key: foxtrot2november
  */
-
+// asdakjshldn aksdlkasldhkjasdhlkj
 // deploy.php (place this in /home/dinolabs/public_html/site)
 $secret = 'foxtrot2november';
 if (!isset($_GET['key']) || $_GET['key'] !== $secret) {
