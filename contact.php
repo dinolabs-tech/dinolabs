@@ -41,7 +41,7 @@
                         </div>
                         <div class="ps-4">
                             <h5 class="mb-2">Call to ask any question</h5>
-                            <h6 class="text-primary mb-0">+234 813 772 6887</h6>
+                            <h6 class="text-primary mb-0">+234 704 324 7461</h6>
                         </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                             <i class="fa fa-envelope-open text-white"></i>
                         </div>
                         <div class="ps-4">
-                            <h5 class="mb-2">Email to get free quote</h5>
+                            <h5 class="mb-2">Email</h5>
                             <h6 class="text-primary mb-0">enquiries@dinolabstech.com</h6>
                             <!--<h6 class="text-primary mb-0">dinolabs.tech@gmail.com</h6>-->
                         </div>
@@ -64,7 +64,7 @@
                         </div>
                         <div class="ps-4">
                             <h5 class="mb-2">Visit our office</h5>
-                            <h6 class="text-primary mb-0">Suite 5, 5th Floor, TISCO Building, Alagbaka Akure, Ondo State, Nigeria.</h6>
+                            <h6 class="text-primary mb-0">5th Floor Wing-B, TISCO Building, Alagbaka Akure, Ondo State, Nigeria.</h6>
                             <!--<h6 class="text-primary mb-0">Plot 2 ireti Ayo street off Aule GRA, Ondo State, Nigeria</h6>-->
                         </div>
                     </div>
