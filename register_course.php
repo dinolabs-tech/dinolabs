@@ -74,10 +74,27 @@ if (isset($_GET['status']) && $_GET['status'] == 'paid' && isset($_GET['form_dat
                                     qualification=?, computer_literacy=?, nkin_name=?, nkin_mobile=?, nkin_email=?,
                                     spn_name=?, spn_mobile=?, spn_email=?, password=? WHERE email=?";
                         $stmt = $conn->prepare($sql);
-                        $stmt->bind_param("sssssssisssssssssss",
-                            $name, $gender, $mobile, $state, $city, $address, $course_id, $duration, $year_enrolled,
-                            $qualification, $literacy, $kin_name, $kin_mobile, $kin_email,
-                            $sponsor_name, $sponsor_mobile, $sponsor_email, $password, $email
+                        $stmt->bind_param(
+                            "sssssssisssssssssss",
+                            $name,
+                            $gender,
+                            $mobile,
+                            $state,
+                            $city,
+                            $address,
+                            $course_id,
+                            $duration,
+                            $year_enrolled,
+                            $qualification,
+                            $literacy,
+                            $kin_name,
+                            $kin_mobile,
+                            $kin_email,
+                            $sponsor_name,
+                            $sponsor_mobile,
+                            $sponsor_email,
+                            $password,
+                            $email
                         );
                     } else {
                         $stmt = $conn->prepare("INSERT INTO academy
@@ -85,10 +102,28 @@ if (isset($_GET['status']) && $_GET['status'] == 'paid' && isset($_GET['form_dat
                             qualification, computer_literacy, nkin_name, nkin_mobile, nkin_email,
                             spn_name, spn_mobile, spn_email, image_path, password)
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                        $stmt->bind_param("sssssssissssssssssss",
-                            $name, $gender, $email, $mobile, $state, $city, $address, $course_id, $duration, $year_enrolled,
-                            $qualification, $literacy, $kin_name, $kin_mobile, $kin_email,
-                            $sponsor_name, $sponsor_mobile, $sponsor_email, $image_path, $password
+                        $stmt->bind_param(
+                            "sssssssissssssssssss",
+                            $name,
+                            $gender,
+                            $email,
+                            $mobile,
+                            $state,
+                            $city,
+                            $address,
+                            $course_id,
+                            $duration,
+                            $year_enrolled,
+                            $qualification,
+                            $literacy,
+                            $kin_name,
+                            $kin_mobile,
+                            $kin_email,
+                            $sponsor_name,
+                            $sponsor_mobile,
+                            $sponsor_email,
+                            $image_path,
+                            $password
                         );
                     }
 
@@ -102,7 +137,6 @@ if (isset($_GET['status']) && $_GET['status'] == 'paid' && isset($_GET['form_dat
                     $stmt->close();
                     $check_stmt->close();
                     exit();
-
                 } else {
                     error_log("Flutterwave Verification Failed: Status: {$transaction_status}, Charged Amount: {$charged_amount}, Expected Amount: {$expected_amount}, Currency: {$currency}");
                     echo "<script>alert('Payment verification failed. Amount mismatch or unsuccessful status. Please contact support.'); window.location.href = 'academy.php';</script>";
@@ -145,7 +179,7 @@ $course = $result->fetch_assoc();
     <?php include('components/topbar.php'); ?>
     <!-- Topbar End -->
 
- <!-- Navbar Start -->
+    <!-- Navbar Start -->
     <div class="container-fluid position-relative p-0">
         <?php include('components/navbar.php'); ?>
 
@@ -160,11 +194,11 @@ $course = $result->fetch_assoc();
     <!-- Navbar End -->
 
 
-<div class="container-fluid py-1 wow fadeInUp" data-wow-delay="0.1s">
-    <div class="container py-1">
-        <form id="registrationForm" enctype="multipart/form-data">
-            <div class="row g-3">
-                                 <div class="col-md-6">
+    <div class="container-fluid py-1 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container py-1">
+            <form id="registrationForm" enctype="multipart/form-data">
+                <div class="row g-3">
+                    <div class="col-md-6">
                         <input type="text" name="name" class="form-control" style="border-radius: 10px;" placeholder="Name (Surname First)" required>
                     </div>
 
@@ -268,69 +302,70 @@ $course = $result->fetch_assoc();
                         <input type="file" name="passport">
                     </div>
 
-                <input type="hidden" id="form_data_json" name="form_data_json">
-                <div class="col-md-2">
-                    <button class="btn btn-primary w-100 py-2 px-3 mt-5" id="registerBtn" style="border-radius: 10px;">Register</button>
+                    <input type="hidden" id="form_data_json" name="form_data_json">
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100 py-2 px-3 mt-5" id="registerBtn" style="border-radius: 10px;">Register</button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
-<?php include('components/footer.php'); ?>
-<a href="#" class="btn btn-lg btn-primary btn-lg-square rounded back-to-top"><i class="bi bi-arrow-up"></i></a>
-<?php include('components/scripts.php'); ?>
+    <?php include('components/footer.php'); ?>
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <?php include('components/scripts.php'); ?>
 
-<script src="https://checkout.flutterwave.com/v3.js"></script>
-<script>
-document.getElementById('registerBtn').addEventListener('click', function(event) {
-    event.preventDefault();
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+    <script>
+        document.getElementById('registerBtn').addEventListener('click', function(event) {
+            event.preventDefault();
 
-    const form = document.getElementById('registrationForm');
-    const formData = new FormData(form);
-    const jsonData = {};
+            const form = document.getElementById('registrationForm');
+            const formData = new FormData(form);
+            const jsonData = {};
 
-    formData.forEach((value, key) => {
-        jsonData[key] = value;
-    });
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
 
-    document.getElementById('form_data_json').value = JSON.stringify(jsonData);
+            document.getElementById('form_data_json').value = JSON.stringify(jsonData);
 
-    const txRef = "ACADEMY_" + Date.now();
+            const txRef = "ACADEMY_" + Date.now();
 
-    FlutterwaveCheckout({
-        public_key: "<?php echo $flutterwave_public_key; ?>", // Use dynamic public key
-        tx_ref: txRef,
-        amount: parseFloat(jsonData.price),
-        currency: "NGN",
-        customer: {
-            email: jsonData.email,
-            phone_number: jsonData.mobile,
-            name: jsonData.name
-        },
-        customizations: {
-            title: "Course Registration",
-            description: jsonData.course,
-            logo: "https://dinolabstech.com/img/logo.png"
-        },
-        callback: function (response) {
-            if (response.status === "successful") {
-                const url = new URL(window.location.href);
-                url.searchParams.set("tx_ref", txRef);
-                url.searchParams.set("status", "paid");
-                url.searchParams.set("transaction_id", response.transaction_id); // Pass Flutterwave transaction ID
-                url.searchParams.set("form_data", btoa(JSON.stringify(jsonData)));
-                window.location.href = url.toString();
-            } else {
-                alert("Payment failed or was cancelled.");
-            }
-        },
-        onclose: function () {
-            // Optional: alert or re-enable UI
-        }
-    });
-});
-</script>
+            FlutterwaveCheckout({
+                public_key: "<?php echo $flutterwave_public_key; ?>", // Use dynamic public key
+                tx_ref: txRef,
+                amount: parseFloat(jsonData.price),
+                currency: "NGN",
+                customer: {
+                    email: jsonData.email,
+                    phone_number: jsonData.mobile,
+                    name: jsonData.name
+                },
+                customizations: {
+                    title: "Course Registration",
+                    description: jsonData.course,
+                    logo: "https://dinolabstech.com/img/logo.png"
+                },
+                callback: function(response) {
+                    if (response.status === "successful") {
+                        const url = new URL(window.location.href);
+                        url.searchParams.set("tx_ref", txRef);
+                        url.searchParams.set("status", "paid");
+                        url.searchParams.set("transaction_id", response.transaction_id); // Pass Flutterwave transaction ID
+                        url.searchParams.set("form_data", btoa(JSON.stringify(jsonData)));
+                        window.location.href = url.toString();
+                    } else {
+                        alert("Payment failed or was cancelled.");
+                    }
+                },
+                onclose: function() {
+                    // Optional: alert or re-enable UI
+                }
+            });
+        });
+    </script>
 
 </body>
+
 </html>
