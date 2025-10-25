@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 session_start();
 include_once 'functions/access_control.php';
-include_once 'db_connect.php'; // Assuming db_connect.php handles database connection
+include_once '../db_connect.php'; // Assuming db_connect.php handles database connection
 
 // Check if user is logged in and has admin privileges
 if (!is_logged_in() || !isAdmin()) {
