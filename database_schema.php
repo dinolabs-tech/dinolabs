@@ -310,6 +310,17 @@ $tables = [
         ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
     ",
 
+       // Table: payment_settings
+    "payment_settings" => "
+            CREATE TABLE IF NOT EXISTS `payment_settings` (
+                `id` INT AUTO_INCREMENT PRIMARY KEY,
+                `setting_name` VARCHAR(255) NOT NULL UNIQUE,
+                `setting_value` TEXT,
+                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+        ",
+
       // Table: mst_useranswer
   "mst_useranswer" => "
         CREATE TABLE IF NOT EXISTS `mst_useranswer` (
@@ -351,6 +362,7 @@ $creationOrder = [
     'mst_result',
     'cbtadmin',
     'timer',
+    'payment_settings',
     'mst_useranswer'
 ];
 
@@ -383,7 +395,7 @@ if (tableExists($conn, 'roles')) {
 
 // Insert initial data into users table if it's empty
 if (tableExists($conn, 'users')) {
-    $result = $conn->query("SELECT COUNT(*) as count FROM `users`");
+    $result = $conn->query("SELECT COUNT(*) as count FROM `users` where username='dinolabs'");
     $row = $result->fetch_assoc();
     if ($row['count'] == 0) {
         $conn->query("INSERT INTO `users` (`id`, `username`, `password`, `name`, `email`, `role_id`, `is_admin`, `created_at`) VALUES

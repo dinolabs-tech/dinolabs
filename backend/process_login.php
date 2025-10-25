@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+include("../database_schema.php");
 include("../db_connect.php");
 
 $username = $_POST['username'];

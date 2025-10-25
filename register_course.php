@@ -1,57 +1,119 @@
 <?php
 include 'db_connect.php';
+include_once 'backend/functions/payment_functions.php'; // Include payment functions
 
+$flutterwave_public_key = getFlutterwavePublicKey(); // Fetch public key from DB
+$flutterwave_secret_key = getFlutterwaveSecretKey(); // Fetch secret key from DB
+
+if (!$flutterwave_public_key || !$flutterwave_secret_key) {
+    // Handle error if keys are not set
+    echo "<script>alert('Flutterwave API keys are not configured. Please contact support.'); window.location.href = 'academy.php';</script>";
+    exit();
+}
 
 // Flutterwave payment success redirect handler
-if (isset($_GET['status']) && $_GET['status'] == 'paid' && isset($_GET['form_data'])) {
+if (isset($_GET['status']) && $_GET['status'] == 'paid' && isset($_GET['form_data']) && isset($_GET['transaction_id'])) {
     $decoded = json_decode(base64_decode($_GET['form_data']), true);
+    $flutterwave_transaction_id = $_GET['transaction_id'];
 
     if ($decoded) {
         extract($decoded);
 
-        $course_id = $_GET["id"];
+        $course_id = $_GET["id"]; // Ensure course_id is passed in the URL for the redirect
 
-        $image_path = ''; // You may enhance this by storing the image before payment
+        // --- Server-side Flutterwave Transaction Verification ---
+        $curl = curl_init();
+        $transaction_id_for_verification = urlencode($flutterwave_transaction_id);
+        $verification_url = "https://api.flutterwave.com/v3/transactions/{$transaction_id_for_verification}/verify";
 
-        // Check if email exists
-        $check_stmt = $conn->prepare("SELECT id FROM academy WHERE email = ?");
-        $check_stmt->bind_param("s", $email);
-        $check_stmt->execute();
-        $check_stmt->store_result();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $verification_url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: application/json",
+                "Authorization: Bearer " . $flutterwave_secret_key
+            ),
+        ));
 
-        if ($check_stmt->num_rows > 0) {
-            $sql = "UPDATE academy SET 
-                        name=?, gender=?, mobile=?, state=?, city=?, address=?, course_id=?, duration=?, year_enrolled=?, 
-                        qualification=?, computer_literacy=?, nkin_name=?, nkin_mobile=?, nkin_email=?, 
-                        spn_name=?, spn_mobile=?, spn_email=?, password=? WHERE email=?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("sssssssisssssssssss", 
-                $name, $gender, $mobile, $state, $city, $address, $course_id, $duration, $year_enrolled, 
-                $qualification, $literacy, $kin_name, $kin_mobile, $kin_email, 
-                $sponsor_name, $sponsor_mobile, $sponsor_email, $password, $email
-            );
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+
+        if ($err) {
+            error_log("cURL Error #:" . $err);
+            echo "<script>alert('Payment verification failed. Please contact support.'); window.location.href = 'academy.php';</script>";
+            exit();
         } else {
-            $stmt = $conn->prepare("INSERT INTO academy 
-                (name, gender, email, mobile, state, city, address, course_id, duration, year_enrolled, 
-                qualification, computer_literacy, nkin_name, nkin_mobile, nkin_email, 
-                spn_name, spn_mobile, spn_email, image_path, password) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssssssissssssssssss", 
-                $name, $gender, $email, $mobile, $state, $city, $address, $course_id, $duration, $year_enrolled, 
-                $qualification, $literacy, $kin_name, $kin_mobile, $kin_email, 
-                $sponsor_name, $sponsor_mobile, $sponsor_email, $image_path, $password
-            );
-        }
+            $res = json_decode($response);
 
-        if ($stmt->execute()) {
-            echo "<script>alert('Payment successful and data saved.'); window.location.href = 'academy.php';</script>";
-        } else {
-            echo "Error saving data: " . $stmt->error;
-        }
+            if ($res->status === 'success') {
+                $transaction_status = $res->data->status;
+                $charged_amount = $res->data->charged_amount;
+                $currency = $res->data->currency;
+                $expected_amount = $decoded['price']; // Get expected amount from form data
 
-        $stmt->close();
-        $check_stmt->close();
-        exit();
+                if ($transaction_status === 'successful' && $charged_amount == $expected_amount && $currency === 'NGN') {
+                    // Transaction is verified, proceed to save student data
+                    $image_path = ''; // You may enhance this by storing the image before payment
+
+                    // Check if email exists
+                    $check_stmt = $conn->prepare("SELECT id FROM academy WHERE email = ?");
+                    $check_stmt->bind_param("s", $email);
+                    $check_stmt->execute();
+                    $check_stmt->store_result();
+
+                    if ($check_stmt->num_rows > 0) {
+                        $sql = "UPDATE academy SET
+                                    name=?, gender=?, mobile=?, state=?, city=?, address=?, course_id=?, duration=?, year_enrolled=?,
+                                    qualification=?, computer_literacy=?, nkin_name=?, nkin_mobile=?, nkin_email=?,
+                                    spn_name=?, spn_mobile=?, spn_email=?, password=? WHERE email=?";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bind_param("sssssssisssssssssss",
+                            $name, $gender, $mobile, $state, $city, $address, $course_id, $duration, $year_enrolled,
+                            $qualification, $literacy, $kin_name, $kin_mobile, $kin_email,
+                            $sponsor_name, $sponsor_mobile, $sponsor_email, $password, $email
+                        );
+                    } else {
+                        $stmt = $conn->prepare("INSERT INTO academy
+                            (name, gender, email, mobile, state, city, address, course_id, duration, year_enrolled,
+                            qualification, computer_literacy, nkin_name, nkin_mobile, nkin_email,
+                            spn_name, spn_mobile, spn_email, image_path, password)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                        $stmt->bind_param("sssssssissssssssssss",
+                            $name, $gender, $email, $mobile, $state, $city, $address, $course_id, $duration, $year_enrolled,
+                            $qualification, $literacy, $kin_name, $kin_mobile, $kin_email,
+                            $sponsor_name, $sponsor_mobile, $sponsor_email, $image_path, $password
+                        );
+                    }
+
+                    if ($stmt->execute()) {
+                        echo "<script>alert('Payment successful and data saved.'); window.location.href = 'academy.php';</script>";
+                    } else {
+                        error_log("Database Error: " . $stmt->error);
+                        echo "<script>alert('Error saving data after successful payment. Please contact support.'); window.location.href = 'academy.php';</script>";
+                    }
+
+                    $stmt->close();
+                    $check_stmt->close();
+                    exit();
+
+                } else {
+                    error_log("Flutterwave Verification Failed: Status: {$transaction_status}, Charged Amount: {$charged_amount}, Expected Amount: {$expected_amount}, Currency: {$currency}");
+                    echo "<script>alert('Payment verification failed. Amount mismatch or unsuccessful status. Please contact support.'); window.location.href = 'academy.php';</script>";
+                    exit();
+                }
+            } else {
+                error_log("Flutterwave API Error: " . ($res->message ?? "Unknown error"));
+                echo "<script>alert('Payment verification failed with Flutterwave API. Please contact support.'); window.location.href = 'academy.php';</script>";
+                exit();
+            }
+        }
     }
 }
 
@@ -229,7 +291,7 @@ document.getElementById('registerBtn').addEventListener('click', function(event)
     const txRef = "ACADEMY_" + Date.now();
 
     FlutterwaveCheckout({
-        public_key: "FLWPUBK-3b4554a666b54d38f291bad092ec7e1b-X", // replace with your key
+        public_key: "<?php echo $flutterwave_public_key; ?>", // Use dynamic public key
         tx_ref: txRef,
         amount: parseFloat(jsonData.price),
         currency: "NGN",
@@ -248,6 +310,7 @@ document.getElementById('registerBtn').addEventListener('click', function(event)
                 const url = new URL(window.location.href);
                 url.searchParams.set("tx_ref", txRef);
                 url.searchParams.set("status", "paid");
+                url.searchParams.set("transaction_id", response.transaction_id); // Pass Flutterwave transaction ID
                 url.searchParams.set("form_data", btoa(JSON.stringify(jsonData)));
                 window.location.href = url.toString();
             } else {

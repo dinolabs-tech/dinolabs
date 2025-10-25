@@ -234,6 +234,13 @@
             </li>
 
             <li class="nav-item">
+              <a href="settings.php" class="collapsed" aria-ed="false">
+                <i class="fas fa-cog"></i>
+                <p>Payment Settings</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
               <a href="audit_history.php" class="collapsed" aria-ed="false">
                 <i class="fas fa-clipboard-list"></i>
                 <p>Activity Logs</p>

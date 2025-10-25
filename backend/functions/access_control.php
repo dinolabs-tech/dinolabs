@@ -43,4 +43,8 @@ function is_logged_in() {
 function get_user_role() {
     return $_SESSION['role'] ?? null;
 }
+
+function isAdmin() {
+    return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+}
 ?>

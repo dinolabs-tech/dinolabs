@@ -1,5 +1,15 @@
 <?php
 session_start();
+include_once 'functions/payment_functions.php'; // Include the new payment functions
+
+$flutterwave_public_key = getFlutterwavePublicKey(); // Fetch public key from DB
+if (!$flutterwave_public_key) {
+    // Handle error if public key is not set, e.g., redirect to settings or show a message
+    $_SESSION['message'] = "Flutterwave Public Key is not configured. Please set it in settings.";
+    $_SESSION['message_type'] = "danger";
+    header("Location: settings.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -174,7 +184,7 @@ console.log("Generated TX_REF:", txRef);
 
       // ✅ Step 4: Launch Flutterwave Checkout
       FlutterwaveCheckout({
-        public_key: "FLWPUBK-3b4554a666b54d38f291bad092ec7e1b-X", // LIVE KEY
+        public_key: "<?php echo $flutterwave_public_key; ?>", // LIVE KEY
         tx_ref: "TX_" + Date.now(),
         amount: amount,
         currency: "NGN",
@@ -221,7 +231,8 @@ console.log("Generated TX_REF:", txRef);
                 payment_amount: amount.toFixed(2),
                 transaction_date: subdate,
                 business_name: organization,
-                license_subscription: package
+                license_subscription: package,
+                flutterwave_transaction_id: data.transaction_id // Pass Flutterwave transaction ID
               });
 
               // ✅ Step 6: Save Transaction
