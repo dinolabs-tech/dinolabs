@@ -136,21 +136,29 @@ $course = $result->fetch_assoc();
 <html lang="en">
 
 <head>
-    <title> Registration form</title>
-    <?php include('components/head.php'); ?>
+    <title>Register Course</title>
 </head>
+<?php include('components/head.php'); ?>
 
 <body>
-<?php include('components/topbar.php'); ?>
-<?php include('components/navbar.php'); ?>
+    <!-- Topbar Start -->
+    <?php include('components/topbar.php'); ?>
+    <!-- Topbar End -->
 
-<div class="container-fluid bg-primary py-5 bg-header" style="margin-bottom: 90px;">
-    <div class="row py-5">
-        <div class="col-12 pt-lg-5 mt-lg-5 text-center">
-            <h1 class="display-4 text-white animated zoomIn"><?php echo $course['course_name']; ?></h1>
+ <!-- Navbar Start -->
+    <div class="container-fluid position-relative p-0">
+        <?php include('components/navbar.php'); ?>
+
+        <div class="container-fluid bg-primary py-5 bg-header" style="margin-bottom: 90px;">
+            <div class="row py-5">
+                <div class="col-12 pt-lg-5 mt-lg-5 text-center">
+                    <h1 class="display-4 text-white animated zoomIn"><?php echo $course['course_name']; ?></h1>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+    <!-- Navbar End -->
+
 
 <div class="container-fluid py-1 wow fadeInUp" data-wow-delay="0.1s">
     <div class="container py-1">
