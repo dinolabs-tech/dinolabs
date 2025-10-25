@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'db_connect.php';
 include_once 'backend/functions/payment_functions.php'; // Include payment functions
 
