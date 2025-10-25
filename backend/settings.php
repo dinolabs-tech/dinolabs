@@ -39,17 +39,28 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <?php include 'components/head.php'; ?>
-    <title>Payment Settings</title>
-</head>
-<body class="sb-nav-fixed">
-    <?php include 'components/navbar.php'; ?>
-    <div id="layoutSidenav">
-        <?php include 'components/sidebar.php'; ?>
-        <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
+<?php include 'components/head.php'; ?>
+
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <?php include('components/sidebar.php'); ?>
+        <!-- End Sidebar -->
+
+        <div class="main-panel">
+            <div class="main-header">
+                <div class="main-header-logo">
+                    <!-- Logo Header -->
+                    <?php include('components/logo_header.php'); ?>
+                    <!-- End Logo Header -->
+                </div>
+                <!-- Navbar Header -->
+                <?php include('components/navbar.php'); ?>
+                <!-- End Navbar -->
+            </div>
+
+            <div class="container">
+                <div class="page-inner">
                     <h1 class="mt-4">Payment Settings</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
@@ -66,7 +77,8 @@ $conn->close();
                                     <?php echo $_SESSION['message']; ?>
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
-                                <?php unset($_SESSION['message']); unset($_SESSION['message_type']); ?>
+                                <?php unset($_SESSION['message']);
+                                unset($_SESSION['message_type']); ?>
                             <?php endif; ?>
 
                             <form action="process_settings.php" method="POST">
@@ -83,10 +95,12 @@ $conn->close();
                         </div>
                     </div>
                 </div>
-            </main>
-            <?php include 'components/footer.php'; ?>
+                </main>
+                <?php include 'components/footer.php'; ?>
+            </div>
         </div>
+        <?php include 'components/scripts.php'; ?>
     </div>
-    <?php include 'components/scripts.php'; ?>
 </body>
+
 </html>

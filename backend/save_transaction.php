@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 
 session_start();
 include_once 'functions/payment_functions.php'; // Include the new payment functions
-include_once 'db_connect.php'; // Ensure db_connect.php is included for $conn
+include_once '../db_connect.php'; // Ensure db_connect.php is included for $conn
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get POST data safely

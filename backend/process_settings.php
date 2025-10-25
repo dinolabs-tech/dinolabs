@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once 'functions/access_control.php';
-include_once 'db_connect.php';
+include_once '../db_connect.php';
 
 if (!is_logged_in() || !isAdmin()) {
     header("Location: login.php");
