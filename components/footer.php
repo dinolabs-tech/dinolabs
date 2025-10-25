@@ -14,7 +14,7 @@
                         </div>
                         <div class="d-flex mb-2">
                             <i class="bi bi-geo-alt text-primary me-2"></i>
-                            <p class="mb-0">5th floor,wing-B Tisco Building, Alagbaka Akure, Ondo State, Nigeria.</p>
+                            <p class="mb-0">5th floor, Wing-B Tisco Building, Alagbaka Akure, Ondo State, Nigeria.</p>
                         </div>
                         <div class="d-flex mb-2">
                             <i class="bi bi-envelope-open text-primary me-2"></i>
